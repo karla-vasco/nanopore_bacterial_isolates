@@ -1,0 +1,35 @@
+#!/bin/bash --login
+
+########## Define Resources Needed with SBATCH Lines ##########
+
+#SBATCH --job-name=Porechop  # give your job a name for easier identification (same as -J)
+#SBATCH --time=168:00:00        # limit of wall clock time - how long will the job take to run? (same as -t)
+#SBATCH --ntasks=1            # number of tasks - how many tasks (nodes) does your job require? (same as -n)
+#SBATCH --cpus-per-task=5    # number of CPUs (or cores) per task (same as -c)
+#SBATCH --mem=50G             # memory required per node - amount of memory (in bytes)
+#SBATCH --output=/mnt/scratch/vascokar/cef_strains/eofiles/Porechop.%j.out #Standard output
+#SBATCH --error=/mnt/scratch/vascokar/cef_strains/eofiles/Porechop.%j.err #Standard error log
+
+
+######### Assign path variables ########
+RAWREADS_DIR=/mnt/home/vascokar/cef_strains/20210421_gDNA_ONT_2/fastq_pass/cat_fastq
+OUTPUT_DIR=/mnt/scratch/vascokar/cef_strains/0-Porechop/ONT_2
+
+########## Modules to Load ##########
+module load GCC/7.3.0-2.30  OpenMPI/3.1.1
+module load Porechop/0.2.4-Python-3.6.6
+
+### for loop to run all sequences in the input directory ###
+
+cd $RAWREADS_DIR
+for f in *.fastq.gz # for each sample f
+
+do
+  n=${f%%.fastq.gz} # strip part of file name
+
+
+###### Runinng PORECHOP #########
+
+porechop -i $RAWREADS_DIR/${n}.fastq.gz -o $OUTPUT_DIR/${n}_chop.fastq.gz
+
+done
