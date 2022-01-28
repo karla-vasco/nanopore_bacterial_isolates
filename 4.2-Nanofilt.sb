@@ -20,9 +20,9 @@ OUTPUT_DIRECTORY=/mnt/scratch/vascokar/cef_strains/1-Nanofilt/ONT_2
 source $NANOFILT_ACTIVATE
 
 cd $INPUT_DIRECTORY
-for f in *_chop.fastq.gz/; # for each sample dir
+for f in *_chop.fastq.gz; # for each sample dir
 do
-  n=${f%%_chop.fastq.gz/} # strip the directory name
+  n=${f%%_chop.fastq.gz} # strip the directory name
 
 gunzip -c $INPUT_DIRECTORY/${n}_chop.fastq.gz | NanoFilt -q 10 | gzip > $OUTPUT_DIRECTORY/${n}_filt.fastq.gz
 
