@@ -1,0 +1,18 @@
+#!/bin/bash --login  
+ 
+########## Define Resources Needed with SBATCH Lines ##########
+#SBATCH --job-name=fastANI # give your job a name for easier identification (same as -J)
+#SBATCH --time=168:00:00 # limit of wall clock time - how long will the job take to run? (same as -t)
+#SBATCH --ntasks=1     # number of tasks - how many tasks (nodes) does your job require? (same as -n)
+#SBATCH --cpus-per-task=4 # number of CPUs (or cores) per task (same as -c)
+#SBATCH --mem=50G     # memory required per node - amount of memory (in bytes)
+#SBATCH --output=/mnt/scratch/vascokar/cef_strains/eofiles/fastANI.%j.out #Standard output
+#SBATCH --error=/mnt/scratch/vascokar/cef_strains/eofiles/fastANI.%j.err #Standard error log
+
+module load iccifort/2020.4.304
+module load FastANI/1.33
+
+fastANI --ql /mnt/home/vascokar/cef_strains/plasmid_list.txt \
+--rl /mnt/home/vascokar/cef_strains/plasmid_list.txt \
+--visualize \
+-o /mnt/scratch/vascokar/cef_strains/fastANI/plasmid_fastANI.out
